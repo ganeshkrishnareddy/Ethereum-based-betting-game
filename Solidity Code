@@ -7,12 +7,9 @@ contract BettingGame {
     uint public betAmount;
     address[] public players;
     mapping(address => bool) public hasBet;
-
-    // Emitted when a player places a bet
     event BetPlaced(address player);
 
-    // Initialize contract with a fixed bet amount
-    constructor(uint _betAmount) {
+constructor(uint _betAmount) {
         manager = msg.sender;
         betAmount = _betAmount;
     }
@@ -39,22 +36,16 @@ contract BettingGame {
 
         resetGame();
     }
-
-    // Resets the game state after a winner is chosen
     function resetGame() internal {
         delete players;
         for (uint i = 0; i < players.length; i++) {
             hasBet[players[i]] = false;
         }
     }
-
-    // Modifier to restrict access to the manager
     modifier onlyManager() {
         require(msg.sender == manager, "Only the manager can choose the winner.");
         _;
     }
-
-    // Returns the list of players who placed bets
     function getPlayers() public view returns (address[] memory) {
         return players;
     }
